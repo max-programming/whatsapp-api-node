@@ -2,8 +2,18 @@
   "name": "whatsapp-api-js",
   "version": "1.0.0",
   "description": "",
+  "bin": "index.js",
   "scripts": {
     "start": "nodemon index.js"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/**/*",
+      "src/**/*"
+    ],
+    "targets": [
+      "node14-win-x64"
+    ]
   },
   "keywords": [],
   "author": "",
