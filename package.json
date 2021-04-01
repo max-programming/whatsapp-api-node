@@ -2,28 +2,27 @@
   "name": "whatsapp-api-js",
   "version": "1.0.0",
   "description": "",
-  "bin": "index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
-  },
-  "pkg": {
-    "assets": [
-      "node_modules/**/*",
-      "src/**/*"
-    ],
-    "targets": [
-      "node14-win-x64"
-    ]
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "esbuild": "^0.10.2",
     "express": "^4.17.1",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.12.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.31",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.3"
   }
 }
