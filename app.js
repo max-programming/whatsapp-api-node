@@ -1,8 +1,8 @@
 // @ts-check
-const express = require("express");
-const fs = require("fs");
-const { Client } = require("whatsapp-web.js");
-const qrcode = require("qrcode-terminal");
+import express from "express";
+import fs from "fs";
+import { Client } from "whatsapp-web.js";
+import qrcode from "qrcode-terminal";
 const app = express();
 
 app.use(express.json());
@@ -10,7 +10,8 @@ app.use(express.json());
 const SESSION_FILE_PATH = "./session.json";
 let sessionCfg;
 if (fs.existsSync(SESSION_FILE_PATH)) {
-  sessionCfg = require(SESSION_FILE_PATH);
+  // sessionCfg = require(SESSION_FILE_PATH);
+  (async () => (sessionCfg = await import(SESSION_FILE_PATH)))();
 }
 
 const client = new Client({
