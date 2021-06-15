@@ -1,8 +1,9 @@
 // @ts-check
-import express from "express";
-import fs from "fs";
-import { Client } from "whatsapp-web.js";
-import qrcode from "qrcode-terminal";
+const express = require("express");
+const fs = require("fs");
+const { Client } = require("whatsapp-web.js");
+// import qrcode from "qrcode-terminal";
+
 const app = express();
 
 app.use(express.json());
@@ -10,8 +11,8 @@ app.use(express.json());
 const SESSION_FILE_PATH = "./session.json";
 let sessionCfg;
 if (fs.existsSync(SESSION_FILE_PATH)) {
-  // sessionCfg = require(SESSION_FILE_PATH);
-  (async () => (sessionCfg = await import(SESSION_FILE_PATH)))();
+  sessionCfg = require(SESSION_FILE_PATH);
+  // (async () => (sessionCfg = await import(SESSION_FILE_PATH)))();
 }
 
 const client = new Client({
@@ -21,12 +22,17 @@ const client = new Client({
 
 client.initialize();
 
-client.on("qr", qr => {
-  qrcode.generate(qr, { small: true });
+app.listen(5555, () => console.log("Listening on port 5555"));
+
+client.on("qr", (qr) => {
+  // qrcode.generate(qr, { small: true });
+  app.get("/qr", (req, res) => {
+    res.send(qr);
+  });
   console.log("QR RECEIVED");
 });
 
-client.on("authenticated", session => {
+client.on("authenticated", (session) => {
   console.log("AUTHENTICATED", session);
   sessionCfg = session;
   fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function (err) {
@@ -36,7 +42,7 @@ client.on("authenticated", session => {
   });
 });
 
-client.on("auth_failure", msg => {
+client.on("auth_failure", (msg) => {
   console.error("AUTHENTICATION FAILURE", msg);
   fs.writeFile(`../session.json`, "{}", function (err) {
     console.log(`Error ${err}`);
@@ -60,6 +66,4 @@ client.on("ready", () => {
     fs.unlink(SESSION_FILE_PATH, () => console.log("Session deleted"));
     process.exit();
   });
-
-  app.listen(3000, () => console.log("Listening on port 3000"));
 });
