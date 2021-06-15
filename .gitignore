@@ -1,6 +1,5 @@
 node_modules
 dist
-*.rest
 session.json
 example.js
 *.tgz

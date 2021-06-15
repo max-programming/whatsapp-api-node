@@ -1,0 +1,7 @@
+POST http://localhost:5555/send-msg
+Content-Type: application/json
+
+{
+  "number": "9909152706",
+  "msg": "https://github.com/max-programming/whatsapp-api-node"
+}
