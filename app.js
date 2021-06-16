@@ -1,7 +1,7 @@
 // @ts-check
 const express = require("express");
 const fs = require("fs");
-const { Client } = require("whatsapp-web.js");
+const { Client, MessageMedia } = require("whatsapp-web.js");
 
 const app = express();
 
@@ -56,10 +56,21 @@ client.on("ready", () => {
   app.post("/send-msg", (req, res) => {
     /** @type {{ number: string; msg: string }} */
     const { number, msg } = req.body;
-    client.sendMessage(`91${number}@c.us`, msg).then(() => res.send(msg));
+    client
+      .sendMessage(`91${number}@c.us`, msg)
+      .then(() => res.send("Message sent successfully"))
+      .catch((err) => res.send(err).status(500));
   });
 
-  app.post("/send-media", (req, res) => {});
+  app.post("/send-media", (req, res) => {
+    /** @type {{ number: string; mimetype: string; base64: string }} */
+    const { number, mimetype, base64 } = req.body;
+    const media = new MessageMedia(mimetype, base64, Date.now().toString());
+    client
+      .sendMessage(`91${number}@c.us`, media)
+      .then(() => res.send("Media sent successfully"))
+      .catch((err) => res.send(err).status(500));
+  });
 
   app.get("/logout", async (req, res) => {
     await client.logout();
