@@ -4,6 +4,7 @@ const fs = require('fs');
 const { Client, MessageMedia } = require('whatsapp-web.js');
 
 const app = express();
+const PORT = process.argv[2] || 5555;
 
 app.use(express.json({ limit: '16mb' }));
 
@@ -20,7 +21,7 @@ const client = new Client({
 
 client.initialize();
 
-app.listen(5555, () => console.log('Listening on port 5555'));
+app.listen(PORT, () => console.log('Listening on port ' + PORT));
 
 client.on('qr', qr => {
   app.get('/qr', (req, res) => {
